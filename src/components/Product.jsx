@@ -1,26 +1,36 @@
 import {useState, useEffect} from 'react';
+import { FiSearch } from "react-icons/fi";
 
 export function Product(){
     const [productos, setProductos] = useState([]);
     const [productoSeleccionado, setProductoSeleccionado] = useState({});
+    const [productoBuscado, setProductosBuscado] = useState('')
 
     useEffect(()=>{
-        fetch('https://demoproyectobackendvercel.vercel.app/products/')
+        fetch(`https://demoproyectobackendvercel.vercel.app/products/${productoBuscado}`)
         .then(response=>response.json())
         .then(data=>{
             console.log(data);
             setProductos(data);
         })
-    },[]);
+    },[productoBuscado]);
 
     const mostrarDetalle = (p)=>{
         setProductoSeleccionado(p); 
         console.log(productoSeleccionado);
     }
 
+    const handleInput = (event)=>{
+        setProductosBuscado(event.target.value)
+    }
+
+   
+
     return(
         <>
             <h1>Productos</h1>
+            <input onChange={handleInput} type="text" name="productobuscado" id="productobuscado" />
+            
             <ul>
                 {productos.map((p,i)=>(
                     <div key={i}>
